@@ -1,0 +1,252 @@
+.search-container {
+  width: min(1100px, 92%);
+  margin: 24px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filters {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.filters input {
+  margin: 0 6px;
+  padding: 10px 12px;
+  border: 1px solid rgba(16, 24, 40, 0.06);
+  border-radius: 8px;
+  min-width: 160px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  transition: box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+.filters select {
+  margin: 0 6px;
+  padding: 10px 12px;
+  border: 1px solid rgba(16, 24, 40, 0.06);
+  border-radius: 8px;
+  min-width: 160px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  transition: box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+.filters button {
+  padding: 10px 14px;
+  margin: 2px;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-1));
+  border: none;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+}
+
+.results-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 4px;
+}
+.results-header .counter {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.product-card {
+  border-radius: 14px;
+  padding: 14px;
+  text-align: left;
+  background: var(--card-bg);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+  /* Force a consistent card ratio regardless of content length */
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.card-media {
+  flex: 0 0 auto;
+  /* make media take about 40% of the card height */
+  height: 40%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  padding: 8px 6px 12px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* allow body to expand; we'll handle truncation per-description */
+  overflow: visible;
+}
+
+.card-body .title {
+  font-size: 1.05rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.card-body .category {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.card-body .description {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.1rem;
+  /* allow description to scroll if long */
+}
+
+/* collapsed description (initial state) */
+.card-body .description.collapsed {
+  max-height: 3.3rem; /* about 3 lines */
+  overflow: hidden;
+  position: relative;
+}
+.card-body .description.collapsed::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.2rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--card-bg));
+}
+
+.see-more {
+  margin-top: 6px;
+  background: transparent;
+  border: none;
+  color: var(--accent-1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+.see-more:hover {
+  text-decoration: underline;
+}
+
+/* When a card is expanded we remove the fixed ratio so content can show */
+.product-card.expanded {
+  aspect-ratio: auto;
+  height: auto;
+  z-index: 6;
+}
+
+/* subtle custom scrollbar for card bodies */
+.card-body::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.card-body::-webkit-scrollbar-thumb {
+  background: rgba(16, 24, 40, 0.06);
+  border-radius: 8px;
+}
+.card-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f3f4f6, #e9eef6);
+}
+
+.product-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #222;
+}
+
+.product-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.92rem;
+}
+
+.price {
+  color: #0b6e4f;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.description {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+  max-height: 2.6rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stock-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #f1f8f3;
+  color: #0b6e4f;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+}
+
+@media (max-width: 560px) {
+  .filters input {
+    min-width: 120px;
+  }
+  .product-card img {
+    aspect-ratio: 16/10;
+  }
+}
+
+/* subtle input focus */
+.filters input:focus {
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+  transform: translateY(-2px);
+}

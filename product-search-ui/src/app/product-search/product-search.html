@@ -1,0 +1,52 @@
+<div class="search-container">
+  <h2>🔍 Product Search</h2>
+
+  <div class="filters">
+    <input type="text" [(ngModel)]="name" placeholder="Search by name" />
+    <select [(ngModel)]="category" aria-label="Category">
+      <option value="">All categories</option>
+      @for(c of categories; track c){
+      <option [value]="c">{{ c }}</option>
+      }
+    </select>
+    <input type="number" [(ngModel)]="maxPrice" placeholder="Max price" />
+    <button (click)="search()">Search</button>
+    <button (click)="clearFilters()">Clear</button>
+  </div>
+
+  @if(totalElements>0){
+  <div class="results-header">
+    <p class="counter">
+      Found {{ totalElements }} {{ totalElements === 1 ? 'product' : 'products' }} — Showing
+      {{ products.length }} on this page
+    </p>
+  </div>
+  } @if(products.length>0){
+  <div class="product-list">
+    @for(p of products; track p.name){
+    <div class="product-card">
+      <div class="card-media">
+        <img [src]="p.image" (error)="onImgError($event)" alt="{{ p.name }}" />
+      </div>
+      <div class="card-body">
+        <h3 class="title">{{ p.name }}</h3>
+        <p class="category">{{ p.category }}</p>
+        <p class="price">{{ p.price | currency : 'EUR' }}</p>
+        <p class="description">{{ p.description }}</p>
+      </div>
+    </div>
+    }
+  </div>
+
+  }@else {
+  <p>No products found.</p>
+  }
+
+  <div class="pagination" *ngIf="totalElements > size">
+    <button [disabled]="page === 0" (click)="onPageChange(page - 1)">◀ Prev</button>
+    <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+    <button [disabled]="(page + 1) * size >= totalElements" (click)="onPageChange(page + 1)">
+      Next ▶
+    </button>
+  </div>
+</div>
