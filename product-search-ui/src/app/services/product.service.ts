@@ -13,14 +13,15 @@ export class ProductService {
   searchProducts(
     name?: string,
     category?: string,
-    maxPrice?: number,
+    maxPrice?: number | null,
     page: number = 0,
     size: number = 10
   ): Observable<PageResponse<Product>> {
     let params = new HttpParams().set('page', page).set('size', size);
-    if (name) params = params.set('name', name);
+    if (name?.trim()) params = params.set('name', name.trim());
     if (category) params = params.set('category', category);
-    if (maxPrice) params = params.set('maxPrice', maxPrice);
+    // 0 is a valid max price: check for null/undefined, not for truthiness
+    if (maxPrice != null) params = params.set('maxPrice', maxPrice);
     return this.http.get<PageResponse<Product>>(`${this.apiUrl}/search`, { params });
   }
 

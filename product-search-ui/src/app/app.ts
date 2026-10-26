@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 import { ProductSearchComponent } from './product-search/product-search';
 
 @Component({
@@ -8,6 +7,4 @@ import { ProductSearchComponent } from './product-search/product-search';
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
 })
-export class App {
-  protected readonly title = signal('property-search');
-}
+export class App {}

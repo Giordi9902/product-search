@@ -7,9 +7,10 @@ export interface Product {
   image?: string;
 }
 
+/** A page of results, as returned by the backend (PageResponse.java). */
 export interface PageResponse<T> {
   content: T[];
-  page: number;
-  size: number;
+  pageNumber: number;
+  pageSize: number;
   totalElements: number;
 }
