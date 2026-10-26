@@ -31,7 +31,6 @@ INSERT INTO products(id, name, category, price, description, image_path) VALUES
  '/uploads/products/noise_cancelling_earbuds.jpg')
 ON CONFLICT (id) DO NOTHING;
 
-CREATE SEQUENCE IF NOT EXISTS product_id_seq;
-ALTER SEQUENCE product_id_seq OWNED BY products.id;
-ALTER TABLE products ALTER COLUMN id SET DEFAULT nextval('product_id_seq');
-SELECT setval('product_id_seq', (SELECT COALESCE(MAX(id), 0) FROM products));
+-- Hibernate creates products.id as an IDENTITY column, which owns its sequence.
+-- After inserting explicit ids, move the sequence forward so the next product gets MAX(id) + 1.
+SELECT setval(pg_get_serial_sequence('products', 'id'), (SELECT COALESCE(MAX(id), 1) FROM products));
