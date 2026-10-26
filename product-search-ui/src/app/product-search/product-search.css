@@ -124,8 +124,14 @@
 .card-body .description {
   color: var(--muted);
   font-size: 0.9rem;
-  line-height: 1.1rem;
-  /* allow description to scroll if long */
+  line-height: 1.2rem;
+  /* At most three whole lines with an ellipsis: a fixed height cut the third line in half */
+  max-height: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 
 /* collapsed description (initial state) */
@@ -249,4 +255,12 @@
   outline: none;
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
   transform: translateY(-2px);
+}
+
+.error {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: #fef2f2;
+  color: #b91c1c;
 }
