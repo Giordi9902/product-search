@@ -82,9 +82,7 @@ class ProductSearchIntegrationTests {
 	}
 
 	@Test
-	void pagesNeitherRepeatNorSkipProducts() throws Exception {
-		// An UPDATE moves the row inside the table file: without ORDER BY the page order changed
-		jdbc.update("UPDATE products SET price = price WHERE id = 1");
+	void pagesCoverEveryProductOnceInNameOrder() throws Exception {
 		List<String> seen = new ArrayList<>();
 		for (int page = 0; page < 3; page++) {
 			String body = mvc.perform(get("/products/search").param("size", "5").param("page", String.valueOf(page)))
@@ -92,6 +90,15 @@ class ProductSearchIntegrationTests {
 			seen.addAll(JsonPath.read(body, "$.content[*].name"));
 		}
 		assertThat(seen).hasSize(15).doesNotHaveDuplicates().isSorted();
+	}
+
+	@Test
+	void pricesKeepTheirCentsAndImagesAreServed() throws Exception {
+		mvc.perform(get("/products/search").param("name", "mouse"))
+				.andExpect(jsonPath("$.content[0].price").value(25.99))
+				.andExpect(jsonPath("$.content[0].image").value("/uploads/products/wireless_mouse.jpg"));
+		mvc.perform(get("/uploads/products/wireless_mouse.jpg"))
+				.andExpect(status().isOk());
 	}
 
 	@Test

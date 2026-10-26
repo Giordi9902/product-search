@@ -1,17 +1,24 @@
 package it.unina.ingsw.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ProductResponse{
-	private Integer id;
-	private String name;
-	private String description;
-	private Double price;
-	private String category;
-	private String image;
+/** A product as it is sent to the client. */
+public record ProductResponse(
+		Integer id,
+		String name,
+		String description,
+		BigDecimal price,
+		String category,
+		String image
+) {
+	public static ProductResponse from(Product product) {
+		return new ProductResponse(
+				product.id(),
+				product.name(),
+				product.description(),
+				product.price(),
+				product.category().name(),
+				product.imagePath()
+		);
+	}
 }

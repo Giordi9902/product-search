@@ -1,23 +1,13 @@
 package it.unina.ingsw.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.math.BigDecimal;
 
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Table(name = "products")
-public class Product {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String description;
-	private Double price;
-	@Enumerated(EnumType.STRING)
-	private ProductCategory category;
-	private String imagePath;
-}
+/** A row of the products table. */
+public record Product(
+		Integer id,
+		String name,
+		String description,
+		BigDecimal price,
+		ProductCategory category,
+		String imagePath
+) {}

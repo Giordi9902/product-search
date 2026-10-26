@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ProductSearchComponent } from './product-search';
 import { PageResponse, Product } from '../services/product.model';
 
-const API = 'http://localhost:8080/products';
+const API = '/products';
 
 function page(content: Partial<Product>[], totalElements: number, pageNumber = 0): PageResponse<Product> {
   return { content: content as Product[], pageNumber, pageSize: 5, totalElements };

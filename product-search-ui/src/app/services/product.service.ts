@@ -7,7 +7,8 @@ import { PageResponse, Product } from './product.model';
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8080/products';
+  // Relative URL: in development `ng serve` forwards /products to the backend (proxy.conf.json)
+  private apiUrl = '/products';
   constructor(private http: HttpClient) {}
 
   searchProducts(

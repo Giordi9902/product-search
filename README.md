@@ -1,12 +1,12 @@
 # Product Search
 
 Un catalogo di prodotti con la ricerca per nome, categoria e prezzo massimo, diviso in pagine.
-Il backend è in **Spring Boot 3.5** (Java 21) e interroga **PostgreSQL** con `JdbcTemplate`;
-il frontend è in **Angular 20**, con componenti standalone e il nuovo control flow (`@if`, `@for`).
+Il backend è in **Spring Boot 3.5** (Java 21) e interroga **PostgreSQL** con `JdbcTemplate`, scrivendo
+l'SQL a mano; il frontend è in **Angular 20**, con componenti standalone e il control flow `@if`/`@for`.
 
 ![La ricerca filtrata per categoria ACCESSORIES e prezzo massimo di 30 euro: tre prodotti](docs/filtri.png)
 
-Il progetto è spiegato passo per passo, bug corretti compresi, nel tutorial
+Il progetto è spiegato passo per passo nel tutorial
 [Ricerca prodotti con Spring Boot e Angular: filtri, paginazione e JdbcTemplate](https://www.giorgiodifusco.it/blog/ricerca-prodotti-con-spring-boot-e-angular-filtri-paginazione-e-jdbctemplate)
 sul mio sito.
 
@@ -29,8 +29,8 @@ export DB_USERNAME=product DB_PASSWORD=product
 ./mvnw spring-boot:run          # http://localhost:8080
 ```
 
-Al primo avvio Hibernate crea la tabella `products` e `data.sql` inserisce quindici prodotti di
-esempio. Poi il frontend, in un altro terminale:
+A ogni avvio Spring esegue `schema.sql`, che crea la tabella `products` se non c'è, e `data.sql`,
+che inserisce quindici prodotti di esempio solo se la tabella è vuota. Poi il frontend, in un altro terminale:
 
 ```sh
 cd product-search-ui
@@ -38,13 +38,15 @@ npm ci
 npm start                       # http://localhost:4200
 ```
 
+In sviluppo `ng serve` inoltra al backend le richieste a `/products` e `/uploads`
+(`proxy.conf.json`): il frontend usa indirizzi relativi e non serve configurare il CORS.
+
 | Variabile | Predefinito | A cosa serve |
 |---|---|---|
 | `DB_URL` | `jdbc:postgresql://localhost:5432/product-db` | l'indirizzo JDBC del database |
 | `DB_USERNAME` | `postgres` | l'utente del database |
 | `DB_PASSWORD` | vuota | la sua password |
-| `SERVER_PORT` | `8080` | la porta del backend (il frontend la cerca su 8080) |
-| `APP_SERVER_URL` | vuoto | l'indirizzo pubblico per gli URL delle immagini; vuoto = quello della richiesta |
+| `SERVER_PORT` | `8080` | la porta del backend (se la cambi, cambiala anche in `proxy.conf.json`) |
 
 ## L'API
 
@@ -58,7 +60,7 @@ npm start                       # http://localhost:4200
 ```text
 $ curl -s 'localhost:8080/products/search?name=mouse'
 {"content":[{"id":1,"name":"Wireless Mouse","description":"A high-precision wireless mouse with ergonomic design.",
-  "price":25.99,"category":"ELECTRONICS","image":"http://localhost:8080/uploads/products/wireless_mouse.jpg"}],
+  "price":25.99,"category":"ELECTRONICS","image":"/uploads/products/wireless_mouse.jpg"}],
  "pageNumber":0,"pageSize":10,"totalElements":1}
 
 $ curl -s 'localhost:8080/products/search?category=SHOES'
@@ -75,6 +77,6 @@ cd product-search-ui && npm test
 ```
 
 I test del backend avviano l'applicazione intera su un database nuovo. Controllano la ricerca senza
-distinzione di maiuscole, i caratteri `%` e `_` presi alla lettera, le pagine che non ripetono né
-saltano prodotti e i parametri sbagliati che rispondono 400. Quelli del frontend usano
+distinzione di maiuscole, i caratteri `%` e `_` presi alla lettera, le pagine in ordine di nome,
+i prezzi con i centesimi e i parametri sbagliati che rispondono 400. Quelli del frontend usano
 `HttpTestingController` e controllano, per esempio, che una nuova ricerca riparta dalla prima pagina.
